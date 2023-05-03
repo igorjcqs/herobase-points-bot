@@ -1,0 +1,30 @@
+name: CI Production
+
+on:
+  push:
+    branches:
+      - "production"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build docker container
+        run: |
+          cp .env.example .env
+          docker-compose up -d --build
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Connecting SSH and deploy new version to production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.KEY }}
+          script: cd /home/ec2-user/bot && git pull && cd /home/ec2-user/bot && docker-compose stop app && docker-compose up -d app

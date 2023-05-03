@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Server {
+  id                   String         @id @default(uuid())
+  rankingMessage       String         @unique
+  active               Boolean        @unique
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt()
+
+  @@map("Servers")
+}
+
+model User {
+  id                   String         @id @default(uuid())
+  discordId            String         @unique
+  points               Int            @default(0)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt()
+
+  @@map("Users")
+}
