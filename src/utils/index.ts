@@ -61,7 +61,11 @@ export async function sendRankingMessage(channel: TextChannel) {
     },
   });
 
+  console.log(server);
+
   const oldMessage = channel.guild.channels.cache.get(server!.rankingMessage);
+
+  console.log(oldMessage);
 
   if (oldMessage) {
     await oldMessage.delete();
