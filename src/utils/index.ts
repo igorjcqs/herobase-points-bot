@@ -114,7 +114,7 @@ export async function sendRankingMessage(channel: TextChannel) {
         }
       }
     } else {
-      resultString = "Ninguém desse time ganhou pontos!";
+      resultString = "Por enquanto, ninguém recebeu pontos!";
     }
 
     const rankingMessage = new EmbedBuilder()
