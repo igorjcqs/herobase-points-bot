@@ -55,6 +55,18 @@ export function numberFormatter(num: number, digits: number) {
 export async function sendRankingMessage(channel: TextChannel) {
   console.log(`INFO: Enviando ranking para o canal: ${channel.name}.`);
 
+  const server = await prisma.server.findFirst({
+    where: {
+      active: true,
+    },
+  });
+
+  const oldMessage = channel.guild.channels.cache.get(server!.rankingMessage);
+
+  if (oldMessage) {
+    await oldMessage.delete();
+  }
+
   var rankingPromise: any;
 
   await prisma.user
