@@ -61,11 +61,12 @@ export async function sendRankingMessage(channel: TextChannel) {
     },
   });
 
-  const oldMessage = channel.messages.cache.get(server!.rankingMessage);
-  console.log(oldMessage);
+  if (server!.rankingMessage) {
+    const oldMessage = await channel.messages.fetch(server!.rankingMessage);
 
-  if (oldMessage) {
-    await oldMessage.delete();
+    if (oldMessage) {
+      await oldMessage.delete();
+    }
   }
 
   var rankingPromise: any;
