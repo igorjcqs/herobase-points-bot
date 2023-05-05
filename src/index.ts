@@ -116,7 +116,7 @@ client.on(Events.InteractionCreate, async (interaction: any) => {
 });
 
 new CronJob(
-  "*/1 * * * *",
+  "*/5 * * * *",
   async function () {
     const channel = client.channels.cache.get(
       process.env.RANKING_CHANNEL!
