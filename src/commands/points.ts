@@ -46,6 +46,49 @@ module.exports = {
         .get(interaction.user.id)
         ?.roles.cache.has(process.env.ADM_ROLE!)
     ) {
+      if (action === "info" && user) {
+        const res = await axios.get(
+          "https://discord.com/api/v9/users/" + user!.user!.id,
+          {
+            headers: {
+              Authorization: "Bot " + process.env.DISCORD_TOKEN,
+            },
+          }
+        );
+
+        prisma.user
+          .upsert({
+            where: {
+              discordId: user!.user!.id,
+            },
+            update: {
+              name: res.data.username,
+              avatar:
+                "https://cdn.discordapp.com/avatars/" +
+                user!.user!.id +
+                "/" +
+                res.data.avatar +
+                ".png",
+            },
+            create: {
+              name: res.data.username,
+              avatar:
+                "https://cdn.discordapp.com/avatars/" +
+                user!.user!.id +
+                "/" +
+                res.data.avatar +
+                ".png",
+              discordId: user!.user!.id,
+            },
+          })
+          .then(async (user) => {
+            await interaction.reply({
+              content: `**SUCESSO**: O usuário <@${user.discordId}> possui um total de **${user.points}** pontos.`,
+              ephemeral: true,
+            });
+          });
+      }
+
       if (action === "add" && user) {
         if (quantity) {
           if (typeof Number(quantity) === "number") {

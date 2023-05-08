@@ -157,8 +157,6 @@ export async function updateGoogleTable() {
           JSON.stringify(rows[i][key]).replace('"', "").replace('"', "")
         );
 
-        console.log(result);
-
         await sheet.setHeaderRow(result, i + 2).catch((err) => {
           console.log(err);
         });
